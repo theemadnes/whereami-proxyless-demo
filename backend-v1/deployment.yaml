@@ -1,43 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: whereami-grpc
+  name: whereami-backend-v1-grpc
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: whereami-grpc
+      app: whereami-backend-v1-grpc
   template:
     metadata:
       labels:
-        app: whereami-grpc
+        app: whereami-backend-v1-grpc
         version: v1
     spec:
-      serviceAccountName: whereami-grpc-ksa
-      initContainers:
-      - args:
-        - --output
-        - "/tmp/bootstrap/td-grpc-bootstrap.json"
-        image: gcr.io/trafficdirector-prod/td-grpc-bootstrap:0.9.0
-
-        imagePullPolicy: IfNotPresent
-        name: grpc-td-init
-        resources:
-          limits:
-            cpu: 100m
-            memory: 100Mi
-          requests:
-            cpu: 10m
-            memory: 100Mi
-        volumeMounts:
-        - name: grpc-td-conf
-          mountPath: /tmp/bootstrap/
-      volumes:
-      - name: grpc-td-conf
-        emptyDir:
-          medium: Memory
+      serviceAccountName: whereami-backend-v1-grpc-ksa
       containers:
-      - name: whereami-grpc
+      - name: whereami-backend-v1-grpc
         image: gcr.io/google-samples/whereami:v1.1.2
         ports:
           - name: grpc
@@ -53,8 +31,6 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 2
         env:
-          - name: GRPC_XDS_BOOTSTRAP
-            value: "/tmp/grpc-xds/td-grpc-bootstrap.json"
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
@@ -70,28 +46,25 @@ spec:
           - name: BACKEND_ENABLED
             valueFrom:
               configMapKeyRef:
-                name: whereami-grpc-configmap
+                name: whereami-backend-v1-grpc-configmap
                 key: BACKEND_ENABLED
           - name: BACKEND_SERVICE
             valueFrom:
               configMapKeyRef:
-                name: whereami-grpc-configmap
+                name: whereami-backend-v1-grpc-configmap
                 key: BACKEND_SERVICE
           - name: METADATA
             valueFrom:
               configMapKeyRef:
-                name: whereami-grpc-configmap
+                name: whereami-backend-v1-grpc-configmap
                 key: METADATA
           - name: ECHO_HEADERS
             valueFrom:
               configMapKeyRef:
-                name: whereami-grpc-configmap
+                name: whereami-backend-v1-grpc-configmap
                 key: ECHO_HEADERS
           - name: GRPC_ENABLED
             valueFrom:
               configMapKeyRef:
-                name: whereami-grpc-configmap
+                name: whereami-backend-v1-grpc-configmap
                 key: GRPC_ENABLED
-        volumeMounts:
-        - name: grpc-td-conf
-          mountPath: /tmp/grpc-xds/

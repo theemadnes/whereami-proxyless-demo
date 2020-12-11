@@ -1,7 +1,7 @@
   apiVersion: "v1"
   kind: "Service"
   metadata:
-    name: "whereami-backend-1-grpc"
+    name: "whereami-backend-v1-grpc"
     annotations:
       cloud.google.com/neg: '{"exposed_ports":{"9090":{}}}'
   spec:
@@ -11,4 +11,4 @@
       name: grpc
       targetPort: 9090
     selector:
-      app: "whereami-backend-1-grpc"
+      app: "whereami-backend-v1-grpc"

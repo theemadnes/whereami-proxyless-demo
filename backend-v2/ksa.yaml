@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: whereami-backend-2-grpc-ksa
+  name: whereami-backend-v2-grpc-ksa
