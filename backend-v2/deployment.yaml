@@ -16,7 +16,7 @@ spec:
       serviceAccountName: whereami-backend-v2-grpc-ksa
       containers:
       - name: whereami-backend-v2-grpc
-        image: gcr.io/google-samples/whereami:v1.1.3
+        image: gcr.io/grpc-traffic-director-demo/whereami:mtls01
         ports:
           - name: grpc
             containerPort: 9090
